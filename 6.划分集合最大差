@@ -1,0 +1,80 @@
+/**
+    已知由n（n >= 2）个正整数构成的集合A={ak|0 <= k < n},将其划分
+    为两个不想交的子集A1和A2，元素个数分别是n1和n2，A1和A2中的元素
+    之和分别为S1和S2，设计一个尽可能高效的算法，满足|n1-n2|最小
+    且|S1-S2|最大。
+**/
+
+
+C++语言
+
+#include<cstdio>
+#include<iostream>
+#include<stdio.h>
+using namespace std;
+
+
+
+int setPartition(int a[], int n){
+
+    int pivotkey, low = 0, low0 = 0, high = n - 1, high0 = n - 1;
+    int flag = 1, k = n/2, i;
+    int s1 = 0, s2 = 0;
+    while(flag){
+        pivotkey = a[low];
+        while(low < high){
+            while(low < high && a[high] >= pivotkey){
+                --high;
+            }
+            if(low != high) a[low] = a[high];
+
+            while(low < high && a[low] <= pivotkey){
+                ++low;
+            }
+            if(low != high) a[high] = a[low];
+
+        }
+
+        a[low] = pivotkey;
+        if(low == k - 1){ //[1,2,3,4,5,6,7]
+            flag = 0;
+        }else{
+            if(low < k - 1){
+                low0 = ++low;
+                high = high0;
+            }
+
+            else{
+                high0 = --high;
+                low = low0;
+            }
+        }
+
+    }
+        for(i = 0; i < k; i++) s1 += a[i];
+        for(i = k; i < n; i++) s2 += a[i];
+        return s2-s1;
+
+}
+
+
+
+
+int main()
+{
+   int A[] = {100,80,90,10,20};
+   setPartition(A,sizeof(A)/sizeof(A[0]));
+   for(int i = 0; i < sizeof(A)/sizeof(A[0]); i++){
+        printf("%d ",A[i]);
+   }
+   printf("\n%d",setPartition(A,sizeof(A)/sizeof(A[0])));
+    return 0;
+}
+
+
+时间复杂度 O（n），空间复杂度 O（1）
+
+
+
+
+

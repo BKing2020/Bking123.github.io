@@ -1,0 +1,40 @@
+···
+    已知线性表按顺序存储，且每个元素都是不相同的整数型元素，
+    设计把所有奇数移动到所有偶数前边的算法（要求时间最少，辅助空间最少）
+···
+
+
+C语言
+#include<cstdio>
+#include<iostream>
+#include<stdio.h>
+using namespace std;
+
+
+
+void move(int A[], int len){
+
+    //对表A按奇偶进行一趟划分
+    int i = 0, j = len - 1;
+    while(i < j){
+        while(i < j && A[i] % 2 != 0) i++;
+        while(i < j && A[j] % 2 != 1) j--;
+        if(i < j){
+            swap(A[i], A[j]);
+        }
+        i++;
+        j--;
+    }
+
+
+}
+
+int main()
+{
+   int A[] = {1,5,9,7,24,2,3,6,80};
+   move(A,9);
+   for(int i = 0; i < sizeof(A)/sizeof(A[0]); i++){
+        printf("%d ",A[i]);
+   }
+    return 0;
+}

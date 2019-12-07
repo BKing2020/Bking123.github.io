@@ -1,0 +1,44 @@
+/**
+    荷兰国王旗问题：设有一个仅由红、白、蓝三种颜色的条块组成的条块
+    序列，请编写一个时间复杂度为 O（n）的算法，使得这些条块按红、白、蓝的顺序
+    排好，即排成荷兰国王旗图案。
+**/
+
+
+C++语言
+
+#include<cstdio>
+#include<iostream>
+#include<stdio.h>
+using namespace std;
+
+typedef enum{RED, WHITE, BLUE} color; //设置枚举数组
+
+void Flag_Arrange(color a[], int n){
+    int i = 0, j = 0, k = n - 1;
+    while(j <= k){
+        switch(a[j]){
+            case RED: swap(a[i], a[j]); i++; j++; break;
+            case WHITE: j++; break;
+            case BLUE: swap(a[j], a[k]); k--;
+        }
+    }
+
+}
+
+int main()
+{
+   color A[] = {WHITE,BLUE,RED};
+   Flag_Arrange(A,sizeof(A)/sizeof(A[0]));
+   for(int i = 0; i < sizeof(A)/sizeof(A[0]); i++){
+        printf("%d ",A[i]);
+   }
+
+    return 0;
+}
+
+
+
+
+
+

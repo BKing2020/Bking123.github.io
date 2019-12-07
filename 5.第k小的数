@@ -1,0 +1,55 @@
+/**
+    试着编写一个算法。使之能够在数组L[1...n]中找到第k小的元素
+    （即从小到大排序后处于第k个位置的元素）
+**/
+
+
+C++语言
+
+#include<cstdio>
+#include<iostream>
+#include<stdio.h>
+using namespace std;
+
+
+
+int findK_elem(int a[], int low, int high, int k){
+    int pivot = a[low];
+    int low_temp = low;
+    int high_temp = high;
+    while(low < high){
+        while(low < high && a[high] >= pivot){
+            --high;
+        }
+        a[low] = a[high];
+        while(low < high && a[low] <= pivot){
+            ++low;
+        }
+        a[high] = a[low];
+
+    }
+    a[low] = pivot;
+
+    if(low == k){
+        return a[low];
+    }else if(low > k){
+         return findK_elem(a, low_temp, low - 1, k);
+    }else{
+        return findK_elem(a, low + 1, high_temp, k-low);
+    }
+
+}
+
+
+
+
+int main()
+{
+   int A[] = {1,80,40,10,20};
+   findK_elem(A,0,8,3);
+   for(int i = 0; i < sizeof(A)/sizeof(A[0]); i++){
+        printf("%d ",A[i]);
+   }
+   printf("\n%d",A[3]);
+    return 0;
+}

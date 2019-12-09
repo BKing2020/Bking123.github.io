@@ -1,0 +1,26 @@
+/**
+    单链表有环，是指单链表的最后一个节点的指针指向了链表中某个节点
+    （通常单链表的最后一个节点的指针域是空的）。是编写算法判断单链表是否存在环。
+
+**/
+
+// 快慢指针
+
+
+bool IsExistsLoop(list *head){
+    list *slow = head, *fast = head;
+    while(fast && fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast){
+            brea;
+        }
+    }
+    return !(fast == null|| fast->next == null);
+
+}
+
+
+
+
+

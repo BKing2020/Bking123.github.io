@@ -1,0 +1,134 @@
+
+``````
+
+在数组中，某个数字减去它右边的数字得到一个数对之差。 求所有数对之差的最大值。例如，在数组{2, 4,1, 16,7,5,11,9}中，
+数对之差的最大值是11,是16减去5的结果。
+(1)给出算法的基本设计思想。
+(2)根据设计思想，采用C或C++语言描述算法，关键之处给出注释。
+(3)说明你所设计算法的时间复杂度。
+
+``````
+
+解法一：分治法
+
+把数组分成两个子数组，其实没有必要拿左边子数组中较小的数字 去和右边子数组中较大的数字相减。
+可以想象，数对之差的最大值只可能是下面三种情况之-: 
+    1、被减数和减数都在第一个子数组中，即第一个子数组中的数对之差的最大值:
+    2、被减数和减数都在第二个子数组中，即第二个子数组中数对之差的最大值;
+    3、被减数在第一一个子数组中， 是第一 一个 子数组的最大值。减数在第二个子数组中，是第二个子数组的最小值。这三个差值的最大者就是整个数组中数对之差的最大值。
+在前面提到的三种情况中，得到第一个子数组的最大值和第二子数组的最小值不是一件难事但如何得到两个子数组中的数对之差的最大值?
+这其实是原始问题的子问题。可以通归地解决。这种思路的参考代码如下:
+
+
+
+C++语言
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+
+
+
+int MaxDiffCore(int* start, int* end, int* max, int* min){
+    if(end == start){
+        *max = *min = *start;
+        return 0;
+    }
+
+    int* middle = start + (end - start)/2;
+
+    int maxLeft, minLeft;
+    int leftDiff = MaxDiffCore(start, middle,&maxLeft,&minLeft);
+    int maxRight, minRight;
+    int rightDiff = MaxDiffCore(middle+1, end, &maxRight, &minRight);
+    int crossDiff = maxLeft - minRight;
+
+    *max = (maxLeft > maxRight) ? maxLeft : maxRight;
+    *min = (minLeft < minRight) ? minLeft : minRight;
+    int maxDiff = (leftDiff > rightDiff) ? leftDiff : rightDiff;
+    maxDiff = (maxDiff > crossDiff) ? maxDiff : crossDiff;
+
+    return maxDiff;
+
+}
+
+int MaxDiff(int nums[], unsigned length){
+    if(nums == nullptr || length < 2) return 0;
+
+    int max, min;
+    return MaxDiffCore(nums, nums + length - 1, &max, &min);
+
+}
+
+
+
+int main()
+{
+    int a[] = {2,4,1,16,7,5,11,9};
+    int maxDiff = MaxDiff(a,8);
+    cout << maxDiff<< endl;
+    return 0;
+}
+
+
+
+
+-------------------------------------------------------------------------------------
+
+解法二：动态规划
+
+diff[i] 是以数组中第i个数字为减数的所有数对之差的最大值。
+diff[i] >= numbe[h] - number[i]。 diff[i]的最大值就是整个数组最大的数对之差。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+
+
+
+int MaxDiff(int nums[], unsigned length){
+    if(nums == nullptr || length < 2) return 0;
+
+    int max = nums[0];
+    int maxDiff = max - nums[1];
+    for(int i = 2; i < length; i++){
+        if(nums[i - 1] > max){
+            max = nums[i - 1];
+        }
+        int currentDiff = max - nums[i];
+        if(currentDiff > maxDiff){
+            maxDiff = currentDiff;
+        }
+    }
+
+    return maxDiff;
+
+}
+
+
+
+int main()
+{
+    int a[] = {2,4,1,16,7,5,11,9};
+    int maxDiff = MaxDiff(a,8);
+    cout << maxDiff<< endl;
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

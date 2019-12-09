@@ -1,0 +1,88 @@
+```
+
+桶排序 (Bucket sort)或所谓的箱排序，是一个排序算法，工作的原理是将数组分到有限数量的桶子里。
+每个桶子再个别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序）。桶排序是鸽巢排序的一种归纳结果。
+当要被排序的数组内的数值是均匀分配的时候，桶排序使用线性时间（Θ（n））。但桶排序并不是比较排序，他不受到 O(n log n) 下限的影响。
+
+````
+
+桶排序以下列程序进行：
+  1、设置一个定量的数组当作空桶子。
+  2、寻访序列，并且把项目一个一个放到对应的桶子去。
+  3、对每个不是空的桶子进行排序。
+  4、从不是空的桶子里把项目再放回原来的序列中。
+  
+  
+  #include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node {
+    int value;
+    struct node * next;
+}node, *pnode;
+
+void bucketSort(int a[], node bucket[], int n)
+{
+    int i = 0;
+    pnode tmp, t;
+    for(i = 0; i < n; i++) {
+        tmp = &bucket[a[i] / 10];
+        t = (pnode)malloc(sizeof(node));
+        t->value = a[i];
+        t->next = NULL;
+        while(tmp != NULL) {
+            if(tmp->next == NULL) {
+                t->next = tmp->next;
+                tmp->next = t;
+                break;
+            } else if (tmp->next->value > t->value) {
+                t->next = tmp->next;
+                tmp->next = t;
+                break;
+            } else {
+                tmp = tmp->next;
+            }
+        }
+    }
+}
+
+int main()
+{
+    node bucket[10];
+    pnode tmp;
+    int a[] = {12, 22, 34, 24, 24, 56, 77, 87, 15, 28, 57, 99};
+    int size = sizeof(a) / sizeof(a[0]);
+    for(int i = 0; i < 10; i++)
+        bucket[i].next = NULL;
+    bucketSort(a, bucket, size);
+       for(int k = 0; k < 10; k++) {
+        tmp = bucket[k].next;
+        while(tmp != NULL) {
+            printf("%d ", tmp->value);
+            tmp = tmp->next;
+        }
+    }
+    printf("\n");
+    return 0;
+}
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

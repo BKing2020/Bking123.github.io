@@ -5,7 +5,8 @@
 **/
 
 // 快慢指针
-
+ 当fast与slow相遇时，slow肯定没有走遍历完链表
+    时间复杂度O(n)，空间复杂度O(1)
 
 bool IsExistsLoop(list *head){
     list *slow = head, *fast = head;

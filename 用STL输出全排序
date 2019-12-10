@@ -1,0 +1,24 @@
+`````
+
+STL输出全排序
+````
+
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+
+int main(){
+
+    int data[4] = {4,3,2,1};
+    sort(data,data + 4);
+    while(next_permutation(data, data + 4)){
+        for(int i = 0; i < 4; i++){
+            cout << data[i] << " ";
+        }
+        cout << endl;
+
+    }
+    return 0;
+}

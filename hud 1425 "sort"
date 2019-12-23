@@ -1,0 +1,48 @@
+给你n个整数，请按从大到小的顺序输出其中前m大的数。
+
+
+每组测试数据有两行，第一行有两个数n,m(0<n,m<1000000)，第二行包含n个各不相同，且都处于区间[-500000,500000]的整数。
+对每组测试数据按从大到小的顺序输出前m大的数。
+
+
+Sample Input
+5 3
+3 -35 92 213 -644
+
+Sample Output
+213 92 3
+
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+const int MAXN = 1000001;
+int a[MAXN];
+
+
+int main(){
+
+    int n, m;
+    while(~scanf("%d%d", &n, &m)){
+        memset(a,0,sizeof(a));
+        for(int i = 0; i<n; i++){
+            int t;
+            scanf("%d", &t);
+            a[500000+t] = 1;
+        }
+        for(int i = MAXN; m>0; i--){
+            if(a[i]){
+                if(m>1){
+                    printf("%d ", i - 500000);
+                }else{
+                    printf("%d\n", i - 500000);
+                }
+                m--;
+            }
+        }
+    }
+
+    return 0;
+}
+

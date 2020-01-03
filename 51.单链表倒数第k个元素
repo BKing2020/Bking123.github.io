@@ -1,0 +1,87 @@
+````TX题目
+
+
+C++
+#include <iostream>
+#include <stdlib.h>
+#include "Node.h"
+
+using namespace std;
+
+LinkList ConstructList()
+{
+    int i = 1;
+    LinkList head = (LinkList)malloc(sizeof(LNode));
+    head -> next = NULL;
+    LinkList tmp = NULL;
+    LinkList cur = head;
+    //构造第一个链表
+    for(; i < 8; i ++){
+        tmp = (LinkList)malloc(sizeof(LNode));
+        tmp -> data = i;
+        tmp -> next = NULL;
+        cur -> next = tmp;
+        cur = tmp;
+    }
+    return head;
+}
+
+
+//顺序打印单链表
+void PrintList(LinkList head){
+    for(LNode* cur = head->next; cur != NULL; cur = cur->next){
+        cout << cur->data << ' ';
+    }
+}
+
+
+//释放链表
+void FreeList(LinkList head){
+    LNode* tmp = NULL;
+    LNode* cur = NULL;
+    for(cur = head -> next; cur != NULL;){
+        tmp = cur;
+        cur = cur -> next;
+        free(tmp);
+    }
+}
+
+LinkList FindLastk(LinkList head, int k){
+    if(head == NULL || head->next == NULL) return NULL;
+    LNode *slow, *fast;
+    slow = fast = head->next;
+    int i;
+    for(i = 0; i < k && fast; i ++){
+        fast = fast -> next;
+    }
+    if(i < k) return NULL;
+    while(fast != NULL){
+        fast = fast -> next;
+        slow = slow -> next;
+    }
+    return slow;
+}
+
+
+
+int main()
+{
+    int k;
+    cin >> k;
+    LinkList result;
+    LinkList head = ConstructList();
+    cout << "链表: ";
+    PrintList(head);
+    result = FindLastk(head,k);
+    if(result){
+        cout << "\n" << "链表倒数第" << k << "元素为: " << result->data;
+    }
+    FreeList(head);
+
+    return 0;
+}
+
+
+
+
+````

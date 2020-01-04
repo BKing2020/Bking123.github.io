@@ -1,0 +1,105 @@
+····
+
+  向左旋转k个位置
+  
+····
+
+
+C++
+
+
+
+#include <iostream>
+#include <stdlib.h>
+#include "Node.h"
+
+using namespace std;
+
+void RotateK(LinkList head, int k)
+{
+
+    if(head == NULL || head->next == NULL) return;
+    //fast指针先走k步，然后与slow指针同时向后走
+    LNode *slow, *fast, *tmp, *con;
+    slow = fast = con = head->next;
+    int i, count = 0;
+    while(con != NULL){
+        count ++;
+        con = con->next;
+    }
+    for(i = 0; i < count - k && fast; i ++){
+        fast = fast->next;
+    }
+    //判断k是否超过链表长度
+    if(i < count - k)return;
+
+    while(fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next;
+    }
+    tmp = slow;
+    slow = slow->next;
+    tmp->next = NULL;
+    fast->next = head->next;
+    head->next = slow;
+
+}
+
+LinkList ConstructList(){
+    int i =1;
+    LinkList head =(LinkList)malloc(sizeof(LNode));
+    head->next=NULL;
+    LinkList tmp=NULL;
+    LinkList cur=head;
+    for(;i<8;i++){
+        tmp=(LinkList)malloc(sizeof(LNode));
+        tmp->data=i;
+        tmp->next=NULL;
+        cur->next=tmp;
+        cur=tmp;
+    }
+    return head;
+}
+
+void PrintList(LinkList head){
+    for(LNode *cur = head->next;cur!=NULL;cur=cur->next){
+        cout << cur->data << " ";
+    }
+
+}
+
+void FreeList(LinkList head){
+    LNode *tmp = NULL;
+    LNode *cur = NULL;
+    for(cur=head->next;cur!=NULL;){
+        tmp=cur;
+        cur=cur->next;
+        free(tmp);
+    }
+
+
+}
+
+
+int main()
+{
+    cout<<"请输入要向左旋转多少个位置: ";
+    int k;
+    cin >> k;
+    LinkList head = ConstructList();
+    cout<<"旋转前：";
+    PrintList(head);
+    cout << "\n" <<"旋转后：";
+    RotateK(head,k);
+    PrintList(head);
+    cout << "\n" <<"释放链表";
+    FreeList(head);
+    return 0;
+}
+
+
+
+
+
+
+

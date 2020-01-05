@@ -1,0 +1,110 @@
+```
+    把链表以K个结点进行为一组进行翻转
+    1->2->3->4->5->6->7
+    k=2
+    2->1->4->3->6->5->7
+
+```
+
+
+
+C++
+
+
+#include <iostream>
+#include <stdlib.h>
+#include "Node.h"
+
+using namespace std;
+
+LinkList Reverse(LinkList head){
+    if(head == NULL || head->next == NULL){
+        return head;
+    }
+    LNode* pre = head;
+    LNode* cur = head->next;
+    LNode* next = cur->next;
+    pre->next = NULL;
+
+    while(cur != NULL){
+        next = cur->next;
+        cur->next = pre;
+        pre = cur;
+        cur = next;
+    }
+    return pre;
+}
+
+
+void ReverseK(LinkList head, int k){
+    if(head == NULL || head->next == NULL || k < 2){
+        return;
+    }
+
+    int i = 1;
+    LNode* pre = head;
+    LNode* begin = head->next;
+    LNode* end = NULL;
+    LNode* pNext = NULL;
+    while(begin!=NULL){
+        end = begin;
+        for(; i < k; i++){
+            if(end->next!=NULL){
+                end = end->next;
+            }else{
+                return;
+            }
+        }
+        pNext = end->next;
+        end->next = NULL;
+        pre->next = Reverse(begin);
+        begin->next = pNext;
+        pre=begin;
+        begin = pNext;
+        i = 1;
+    }
+
+}
+
+
+int main()
+{
+    int i = 1;
+    int k;
+    LinkList head = (LinkList)malloc(sizeof(LNode));
+    head->next = NULL;
+    LinkList tmp = NULL;
+    LinkList cur = head;
+    for(; i < 8; i++){
+        tmp = (LinkList)malloc(sizeof(LNode));
+        tmp->data = i;
+        tmp->next = NULL;
+        cur->next = tmp;
+        cur = tmp;
+    }
+    cout << "顺序输出： " ;
+    for(cur = head->next; cur != NULL; cur = cur->next){
+        cout << cur->data << " ";
+    }
+    cout << "\n" <<"请输入以哪个结点进行翻转：";
+    cin >> k;
+    ReverseK(head, k);
+    cout << "翻转后的链表为: ";
+    for(cur = head->next; cur != NULL; cur = cur->next){
+        cout << cur->data << " ";
+    }
+    cout << endl;
+    cout << "正在释放链表" << endl;
+
+    for(cur = head->next; cur != NULL;){
+        tmp = cur;
+        cur = cur->next;
+        free(tmp);
+    }
+    return 0;
+}
+
+
+
+
+
